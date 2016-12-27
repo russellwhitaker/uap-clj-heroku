@@ -1,0 +1,4 @@
+(-main)
+(use 'uap-clj-heroku.web)
+(.stop server)
+(quit)
