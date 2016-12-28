@@ -8,7 +8,6 @@
             [ring.middleware.session.cookie :as cookie]
             [ring.adapter.jetty :as jetty]
             [ring.middleware.basic-authentication :as basic]
-            [cemerick.drawbridge :as drawbridge]
             [environ.core :refer [env]]))
 
 (defn- authenticated?
@@ -22,8 +21,6 @@
       (basic/wrap-basic-authentication authenticated?)))
 
 (defroutes app
-  (ANY "/repl" {:as req}
-       (drawbridge req))
   (GET "/" []
        {:status 200
         :headers {"Content-Type" "text/plain"}
