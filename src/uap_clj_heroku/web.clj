@@ -3,12 +3,15 @@
             [compojure.handler :refer [site]]
             [compojure.route :as route]
             [clojure.java.io :as io]
+            [ring.middleware.params :refer [wrap-params]]
+            [ring.middleware.keyword-params :refer [wrap-keyword-params]]
             [ring.middleware.stacktrace :as trace]
             [ring.middleware.session :as session]
             [ring.middleware.session.cookie :as cookie]
             [ring.adapter.jetty :as jetty]
             [ring.middleware.basic-authentication :as basic]
-            [environ.core :refer [env]]))
+            [environ.core :refer [env]]
+            [uap-clj.core :refer [useragent]]))
 
 (defn- authenticated?
   [user pass]
@@ -20,6 +23,10 @@
        {:status 200
         :headers {"Content-Type" "text/plain"}
         :body "Useragent parser v1.3.1"})
+  (POST "/useragent" req
+       {:status 200
+        :headers {"Content-Type" "application/json"}
+        :body (useragent (get-in req [:params "useragent"]))})
   (ANY "*" []
        (route/not-found (slurp (io/resource "404.html")))))
 
@@ -40,6 +47,8 @@
         ((if (env :production)
            wrap-error-page
            trace/wrap-stacktrace))
+        wrap-params
+        wrap-keyword-params
         (site {:session {:store store}}))))
 
 (defn -main
