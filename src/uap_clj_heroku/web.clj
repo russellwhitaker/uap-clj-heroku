@@ -26,7 +26,7 @@
   (ANY "/useragent" req
        {:status 200
         :headers {"Content-Type" "application/json"}
-        :body (pr-str (useragent (get-in req [:params "useragent"] "")))})
+        :body (pr-str (useragent (get-in req [:params "useragent"] (pr-str req))))})
   (ANY "*" []
        (route/not-found (slurp (io/resource "404.html")))))
 
