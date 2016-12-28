@@ -15,7 +15,7 @@
             [lein-ancient         "0.6.10"]
             [jonase/eastwood      "0.2.3"]
             [speclj               "3.3.2"]]
-  :hooks [environ.leiningen.hooks]
+  ;:hooks [environ.leiningen.hooks]
   :uberjar-name "uap-clj-heroku-standalone.jar"
   :profiles {:production {:env {:production true}}
              :uberjar {:aot :all}
