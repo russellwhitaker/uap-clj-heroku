@@ -23,7 +23,7 @@
        {:status 200
         :headers {"Content-Type" "text/plain"}
         :body "Useragent parser v1.3.1"})
-  (POST "/useragent" req
+  (ANY "/useragent" req
        {:status 200
         :headers {"Content-Type" "application/json"}
         :body (useragent (get-in req [:params "useragent"] ""))})
