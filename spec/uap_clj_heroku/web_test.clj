@@ -7,5 +7,5 @@
   (it "GET /"
     (should= (app (mock/request :get "/"))
              {:status  200
-              :headers {"content-type" "text/plain"}
+              :headers {"Content-Type" "text/plain"}
               :body    "Useragent parser v1.3.1"})))

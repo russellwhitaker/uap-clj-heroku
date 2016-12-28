@@ -27,7 +27,7 @@
   (GET "/" []
        {:status 200
         :headers {"Content-Type" "text/plain"}
-        :body (pr-str "Useragent parser v1.3.1")})
+        :body "Useragent parser v1.3.1"})
   (ANY "*" []
        (route/not-found (slurp (io/resource "404.html")))))
 
