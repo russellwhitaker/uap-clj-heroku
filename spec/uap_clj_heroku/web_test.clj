@@ -15,10 +15,10 @@
               :body    "Useragent parser v1.3.1"}))
   (it "POST /useragent"
     (should= ((-> app wrap-params wrap-keyword-params)
-               (mock/request :post "/useragent" {:useragent ua}))
+               (mock/request :post "/useragent" {:ua ua}))
              {:status  200
               :headers {"Content-Type" "application/json"}
-              :body    {:ua ua
+              :body    (pr-str {:ua ua
                         :browser
                           {:family "Baidu Explorer"
                            :major "1"
@@ -33,4 +33,4 @@
                         :device
                           {:family "Lenovo A288t_TD"
                            :brand "Lenovo"
-                           :model "A288t_TD"}}})))
+                           :model "A288t_TD"}})})))

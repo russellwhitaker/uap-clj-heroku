@@ -23,10 +23,10 @@
        {:status 200
         :headers {"Content-Type" "text/plain"}
         :body "Useragent parser v1.3.1"})
-  (ANY "/useragent" req
+  (ANY "/useragent" [ua]
        {:status 200
         :headers {"Content-Type" "application/json"}
-        :body (pr-str (useragent (get-in req [:params "useragent"] "")))})
+        :body (pr-str (useragent ua))})
   (ANY "*" []
        (route/not-found (slurp (io/resource "404.html")))))
 
