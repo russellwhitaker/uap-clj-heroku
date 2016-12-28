@@ -26,7 +26,7 @@
   (POST "/useragent" req
        {:status 200
         :headers {"Content-Type" "application/json"}
-        :body (useragent (get-in req [:params "useragent"]))})
+        :body (useragent (get-in req [:params "useragent"] ""))})
   (ANY "*" []
        (route/not-found (slurp (io/resource "404.html")))))
 
