@@ -17,7 +17,9 @@
   ;:hooks [environ.leiningen.hooks]
   :uberjar-name "uap-clj-heroku-standalone.jar"
   :profiles {:production {:env {:production true}}
-             :uberjar {:aot :all}
+             :uberjar {:aot :all
+                       :uberjar-exclusions
+                         [#"dev_resources|^test$|test_resources|docs|\.md|LICENSE"]}
              :dev {:dependencies [[speclj         "3.3.2"]
                                   [ring/ring-mock "0.3.0"]]
                    :test-paths ["spec"]}})
