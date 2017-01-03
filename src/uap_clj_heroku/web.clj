@@ -1,5 +1,5 @@
 (ns uap-clj-heroku.web
-  (:require [compojure.core :refer [defroutes GET PUT POST DELETE ANY]]
+  (:require [compojure.core :refer [defroutes GET ANY]]
             [compojure.handler :refer [site]]
             [compojure.route :as route]
             [clojure.java.io :as io]
@@ -10,14 +10,8 @@
             [ring.middleware.session :as session]
             [ring.middleware.session.cookie :as cookie]
             [ring.adapter.jetty :as jetty]
-            [ring.middleware.basic-authentication :as basic]
             [environ.core :refer [env]]
             [uap-clj.core :refer [useragent]]))
-
-(defn- authenticated?
-  [user pass]
-  ;; TODO: heroku config:add REPL_USER=[...] REPL_PASSWORD=[...]
-  (= [user pass] [(env :repl-user false) (env :repl-password false)]))
 
 (defn lookup
   "Look up full useragent fields, or only lookup device,
