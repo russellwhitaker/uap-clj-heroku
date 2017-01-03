@@ -3,10 +3,12 @@
   :url "http://uap-clj-heroku.herokuapp.com"
   :dependencies [[org.clojure/clojure       "1.8.0"]
                  [compojure                 "1.5.1"]
+                 [ring/ring-json            "0.4.0"]
                  [ring/ring-jetty-adapter   "1.5.0"]
                  [ring/ring-devel           "1.5.0"]
                  [ring-basic-authentication "1.0.5"]
                  [environ                   "1.1.0"]
+                 [cheshire                  "5.6.3"]
                  [uap-clj                   "1.3.1"]]
   :min-lein-version "2.0.0"
   :plugins [[environ/environ.lein "0.2.1"]
@@ -18,4 +20,6 @@
              :uberjar {:aot :all}
              :dev {:dependencies [[speclj         "3.3.2"]
                                   [ring/ring-mock "0.3.0"]]
-                   :test-paths ["spec"]}})
+                   :test-paths ["spec"]}}
+  :aliases {"test"  ["do" ["clean"] ["spec" "--reporter=d"]]
+            "build" ["do" ["clean"] ["uberjar"]]})

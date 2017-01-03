@@ -3,8 +3,9 @@
             [compojure.handler :refer [site]]
             [compojure.route :as route]
             [clojure.java.io :as io]
-            [ring.middleware.params :refer [wrap-params]]
             [ring.middleware.keyword-params :refer [wrap-keyword-params]]
+            [ring.middleware.json :refer [wrap-json-params]]
+            [cheshire.core :as json]
             [ring.middleware.stacktrace :as trace]
             [ring.middleware.session :as session]
             [ring.middleware.session.cookie :as cookie]
@@ -18,15 +19,35 @@
   ;; TODO: heroku config:add REPL_USER=[...] REPL_PASSWORD=[...]
   (= [user pass] [(env :repl-user false) (env :repl-password false)]))
 
+(defn lookup
+  "Look up full useragent fields, or only lookup device,
+   o/s, or browser fields.
+  "
+  [query]
+  (let [{:keys [ua lookup]} query
+        parser (if (= "useragent" lookup)
+                 (symbol "uap-clj.core/useragent")
+                 (symbol (str "uap-clj." lookup) lookup))]
+    (if (= "useragent" lookup)
+      ((resolve parser) ua)
+      (merge {(keyword lookup) ((resolve parser) ua)}
+             {:ua ua}))))
+
+(defn lookups
+  "Get request and look up against all useragents therein
+  "
+  [event]
+  {:results (into [] (map lookup (:queries event)))})
+
 (defroutes app
   (GET "/" []
        {:status 200
         :headers {"Content-Type" "text/plain"}
         :body "Useragent parser v1.3.1"})
-  (ANY "/useragent" [ua]
+  (ANY "/useragent" [& params]
        {:status 200
         :headers {"Content-Type" "application/json"}
-        :body (pr-str (useragent ua))})
+        :body (json/generate-string (lookups params))})
   (ANY "*" []
        (route/not-found (slurp (io/resource "404.html")))))
 
@@ -47,8 +68,8 @@
         ((if (env :production)
            wrap-error-page
            trace/wrap-stacktrace))
-        wrap-params
         wrap-keyword-params
+        wrap-json-params
         (site {:session {:store store}}))))
 
 (defn -main
