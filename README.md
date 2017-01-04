@@ -5,9 +5,9 @@ A [Heroku](http://www.heroku.com)-deployable web app wrapping the [uap-clj usera
 Features:
 * POST useragent lookups for `os`, `browser`, `device`, or all fields;
 * POST single or multiple useragent strings for lookup;
-* Cookie-backed session store mode;
+* Cookie-backed session store;
 * Stack traces in development mode;
-* Environment-based config via [environ](https://github.com/weavejester/environ)
+* Environment-based configuration using [environ](https://github.com/weavejester/environ)
 
 ## Usage
 
@@ -55,39 +55,52 @@ nil
 user=>
 ```
 
-Initialize a git repository for your project.
-
-    $ git init
-    $ git add .
-    $ git commit -m "Initial commit."
-
-You'll need the [heroku toolbelt](https://toolbelt.herokuapp.com) installed to manage the heroku side of your app. Once it's installed, create the app on Heroku:
+You'll need the [heroku toolbelt](https://toolbelt.herokuapp.com) installed to manage Heroku deployment of the useragent endpoint. Once you have those utilities installed, create the useragent endpoint on Heroku:
 
 ```bash
 $ heroku apps:create my-ua-parser
 ```
 
-Then you can deploy to Heroku:
-
-    $ git push heroku master
-    Writing objects: 100% (13/13), 2.87 KiB, done.
-    Total 13 (delta 0), reused 0 (delta 0)
-
-    -----> Heroku receiving push
-    -----> Clojure app detected
-    -----> Installing Leiningen
-           Downloading: leiningen-2.0.0-preview7-standalone.jar
-    [...]
-    -----> Launching... done, v3
-           http://uap-clj-heroku.herokuapp.com deployed to Heroku
-
-    To git@heroku.com:uap-clj-heroku.git
-     * [new branch]      master -> master
-
-Test it with `curl`:
+Then deploy to Heroku:
 
 ```bash
-$ curl http://uap-clj-heroku.herokuapp.com
+$ git push heroku master
+Counting objects: 6, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (6/6), 3.08 KiB | 0 bytes/s, done.
+Total 6 (delta 2), reused 0 (delta 0)
+remote: Compressing source files... done.
+remote: Building source:
+remote:
+remote: -----> Clojure (Leiningen 2) app detected
+remote: -----> Installing OpenJDK 1.8... done
+remote: -----> Using cached Leiningen 2.6.1
+remote:        Writing: lein script
+remote: -----> Building with Leiningen
+remote:        Running: lein uberjar
+remote:        Compiling my-ua-parser.web
+remote:        2017-01-03 22:09:21.611:INFO::main: Logging initialized @6818ms
+remote:        Created /tmp/build_09041380bfacdf79a3c50f5dbd91575a/target/my-ua-parser-1.0.0.jar
+remote:        Created /tmp/build_09041380bfacdf79a3c50f5dbd91575a/target/my-ua-parser-standalone.jar
+remote: -----> Discovering process types
+remote:        Procfile declares types -> web
+remote:
+remote: -----> Compressing...
+remote:        Done: 73.2M
+remote: -----> Launching...
+remote:        Released v19
+remote:        https://my-ua-parser.herokuapp.com/ deployed to Heroku
+remote:
+remote: Verifying deploy... done.
+To https://git.heroku.com/my-ua-parser.git
+   434218d..0df9321  master -> master
+```
+
+Test with `curl`:
+
+```bash
+$ curl http://my-ua-parser.herokuapp.com
 Useragent parser v1.3.1
 ```
 
@@ -106,13 +119,19 @@ You can send single POST requests containing queries for any of full `useragent`
 ```
 
 ```bash
-curl -H "Content-Type: application/json" -X POST -d @query.json  http://uap-clj-heroku.herokuapp.com/useragent
+curl -H "Content-Type: application/json" -X POST -d @query.json  http://my-ua-parser.herokuapp.com/useragent
 {"results":[{"ua":"Lenovo-A288t_TD/S100 Linux/2.6.35 Android/2.3.5 Release/02.29.2012 Browser/AppleWebkit533.1 Mobile Safari/533.1 FlyFlow/1.4","browser":{"family":"Baidu Explorer","major":"1","minor":"4","patch":""},"os":{"family":"Android","major":"2","minor":"3","patch":"5","patch_minor":""},"device":{"family":"Lenovo A288t_TD","brand":"Lenovo","model":"A288t_TD"}},{"browser":{"family":"Firefox","major":"3","minor":"0","patch":"19"},"ua":"Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.19) Gecko/2010031218 FreeBSD/i386 Firefox/3.0.19,gzip(gfe),gzip(gfe)"},{"device":{"family":"HTC Amaze 4G","brand":"HTC","model":"Amaze 4G"},"ua":"Mozilla/5.0 (Linux; U; Android 4.0.3; en-us; Amaze_4G Build/IML74K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"},{"os":{"family":"Android","major":"2","minor":"3","patch":"6","patch_minor":""},"ua":"UCWEB/2.0 (Linux; U; Adr 2.3.6; en-US; HUAWEI_Y210-0251) U2/1.0.0 UCBrowser/8.6.0.318 U2/1.0.0 Mobile"}]}
 ```
 
-The cookie-backed session store needs a session secret configured for encryption:
+If you care about session management, then the cookie-backed session store needs to be set up:
 
-    $ heroku config:add SESSION_SECRET=$RANDOM_16_CHARS
+```bash
+$ heroku config:add SESSION_SECRET=$RANDOM_16_CHARS
+e.g.:
+$ heroku config:add SESSION_SECRET=`openssl rand -base64 12`
+Setting SESSION_SECRET and restarting ⬢ my-ua-parser... done, v20
+SESSION_SECRET: YFYDLw9L8JfFgJd+
+```
 
 __Maintained by Russell Whitaker__
 

@@ -1,5 +1,5 @@
 (defproject uap-clj-heroku "1.0.0"
-  :description "Heroku-specific REST API for the uap-clj useragent parser"
+  :description "Heroku-specific Clojure REST API for the uap-clj useragent parser"
   :url "http://uap-clj-heroku.herokuapp.com"
   :dependencies [[org.clojure/clojure       "1.8.0"]
                  [compojure                 "1.5.1"]
@@ -14,7 +14,6 @@
   :plugins [[environ/environ.lein "0.2.1"]
             [lein-ancient         "0.6.10"]
             [speclj               "3.3.2"]]
-  ;:hooks [environ.leiningen.hooks]
   :uberjar-name "uap-clj-heroku-standalone.jar"
   :profiles {:production {:env {:production true}}
              :uberjar {:aot :all}
