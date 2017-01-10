@@ -1,0 +1,7 @@
+language: clojure
+jdk:
+  - oraclejdk8
+script:
+  - lein eastwood "{:namespaces [:source-paths]}"
+  - lein ancient
+  - lein test
