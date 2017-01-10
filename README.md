@@ -55,7 +55,7 @@ nil
 user=>
 ```
 
-You'll need the [heroku toolbelt](https://toolbelt.herokuapp.com) installed to manage Heroku deployment of the useragent endpoint. Once you have those utilities installed, create the useragent endpoint on Heroku:
+You'll need the [heroku toolbelt](https://toolbelt.herokuapp.com) installed to manage Heroku deployment of the `useragent` endpoint. Once you have those utilities installed, create the `useragent` endpoint on Heroku:
 
 ```bash
 $ heroku apps:create my-ua-parser
