@@ -1,4 +1,4 @@
-(ns uap-clj-heroku.web-test
+(ns uap-clj-heroku.web-spec
   (:refer-clojure :exclude [read])
   (:require [speclj.core :refer :all]
             [uap-clj-heroku.web :refer :all]
