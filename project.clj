@@ -1,6 +1,6 @@
 (defproject uap-clj-heroku "1.0.0"
   :description "Heroku-specific Clojure REST API for the uap-clj useragent parser"
-  :url "http://uap-clj-heroku.herokuapp.com"
+  :url "https://github.com/russellwhitaker/uap-clj-heroku"
   :dependencies [[org.clojure/clojure       "1.8.0"]
                  [compojure                 "1.5.1"]
                  [ring/ring-json            "0.4.0"]
